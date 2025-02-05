@@ -1,4 +1,4 @@
-# Dockerized SQL-Server 2019
+# Dockerized SQL-Server 2017
 Mounts .mdf databases in a dockerized sql-server instance.
 
 ## Run it
@@ -24,17 +24,12 @@ The original article explained very well how to get up and running with a Docker
 ### 2 - Build image and bring containers up.
 
 ``` bash
+$ docker-compose build
 $ docker-compose up
-```
-
-### 3 - Run the attach script.
-
-*Wait for server to be brought up*
-Open another shell and run:
-``` bash
-$ make attach
 ```
 
 ## Based on resources from the following article:
 [Run your SQL Server MDF file inside a linux Docker Container](https://www.mobilize.net/blog/run-your-sql-server-mdf-file-inside-a-linux-docker-container)
 The core of this repository was taken from the article. Changes consists in generalizing attach_db script and wrapping Dockerfile in a compose file.
+
+[Microsoft own example of costumization](https://github.com/microsoft/mssql-docker/tree/master/linux/preview/examples/mssql-customize)

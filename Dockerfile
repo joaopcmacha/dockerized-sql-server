@@ -1,13 +1,20 @@
-FROM mcr.microsoft.com/mssql/server:2019-latest
-
+FROM mcr.microsoft.com/mssql/server:2017-latest
 USER root
-WORKDIR /src
 
-COPY attach_db.sh /db_files/
-COPY ./Data/*.mdf /db_files/
-COPY ./Data/*.ldf /db_files/
+VOLUME /usr/config
+# Create a config directory
+RUN mkdir -p /usr/config
+WORKDIR /usr/config
 
-RUN chmod +x /db_files/attach_db.sh
-RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started"
+# Create database directory
+RUN mkdir -p /db_files
 
-ENTRYPOINT /db_files/attach_db.sh & /opt/mssql/bin/sqlservr
+# Bundle config source
+COPY ./entrypoint.sh /usr/config
+COPY ./configure-db.sh /usr/config
+
+# Grant permissions for to our scripts to be executable
+RUN chmod +x /usr/config/entrypoint.sh
+RUN chmod +x /usr/config/configure-db.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
