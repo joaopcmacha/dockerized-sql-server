@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   db:
-    #image: mcr.microsoft.com/mssql/server:2017-latest
     user: root
     build: .
     ports:
@@ -10,4 +9,5 @@ services:
     env_file:
       - .env
     volumes:
+      - ./master_db:/var/opt/mssql/data
       - ./Data/:/db_files/

@@ -1,20 +1,16 @@
-FROM mcr.microsoft.com/mssql/server:2017-latest
+FROM mcr.microsoft.com/mssql/server:2022-latest
 USER root
 
 VOLUME /usr/config
-# Create a config directory
-RUN mkdir -p /usr/config
+# Create config and databases directory
+RUN mkdir -p /usr/config && mkdir -p /db_files
 WORKDIR /usr/config
-
-# Create database directory
-RUN mkdir -p /db_files
 
 # Bundle config source
 COPY ./entrypoint.sh /usr/config
 COPY ./configure-db.sh /usr/config
 
 # Grant permissions for to our scripts to be executable
-RUN chmod +x /usr/config/entrypoint.sh
-RUN chmod +x /usr/config/configure-db.sh
+RUN chmod +x /usr/config/entrypoint.sh && chmod +x /usr/config/configure-db.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
